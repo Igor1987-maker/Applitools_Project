@@ -2,6 +2,7 @@ import com.applitools.eyes.BatchInfo;
 import com.applitools.eyes.EyesRunner;
 import com.applitools.eyes.RectangleSize;
 import com.applitools.eyes.TestResultsSummary;
+import com.applitools.eyes.exceptions.DiffsFoundException;
 import com.applitools.eyes.selenium.ClassicRunner;
 import com.applitools.eyes.selenium.Eyes;
 import org.openqa.selenium.By;
@@ -42,7 +43,8 @@ public class TrelloWithApplitools {
 
 
         // Set your personal Applitols API Key from your environment variables.
-        eyes.setApiKey(System.getenv("ylfTBcOE0E107fPVsf3m9101OcEgPoJWZyrx2CNMRtqXmPw110"));
+        //eyes.setApiKey(System.getenv("ylfTBcOE0E107fPVsf3m9101OcEgPoJWZyrx2CNMRtqXmPw110"));
+        eyes.setApiKey(System.getenv("APPLITOOLS_API_KEY"));
 
         // set batch name
         eyes.setBatch(batch);
@@ -57,13 +59,13 @@ public class TrelloWithApplitools {
         // Set AUT's name, test name and viewport size (width X height)
         // We have set it to 800 x 600 to accommodate various screens. Feel free to
         // change it.
-        eyes.open(driver, "Demo App", "Smoke Test", new RectangleSize(800, 800));
+        eyes.open(driver, "Demo App", "Smoke Test", new RectangleSize(800, 600));
 
         // Navigate the browser to the "ACME" demo app.
-        driver.get("https://demo.applitools.com");
+        //driver.get("https://demo.applitools.com");
 
         // To see visual bugs after the first run, use the commented line below instead.
-        //driver.get("https://demo.applitools.com/index_v2.html");
+        driver.get("https://demo.applitools.com/index_v2.html");
 
         // Visual checkpoint #1 - Check the login page.
         eyes.checkWindow("Login Window");
@@ -88,10 +90,20 @@ public class TrelloWithApplitools {
         eyes.abortIfNotClosed();
 
         // Wait and collect all test results
-        TestResultsSummary allTestResults = runner.getAllTestResults();
+        try {
+            TestResultsSummary allTestResults = runner.getAllTestResults();
+            System.out.println(allTestResults);
+        }catch (DiffsFoundException dfe){
+            System.out.println("was found "+ dfe.getMessage());
+
+        }
+
+
+
+   /*     TestResultsSummary allTestResults = runner.getAllTestResults();
 
         // Print results
-        System.out.println(allTestResults);
+        System.out.println(allTestResults);*/
     }
 
 
